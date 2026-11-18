@@ -1,0 +1,8 @@
+.godot/
+build/
+*.tmp
+renders/game/
+renders/autotest.log
+water-sort-game/
+water-sort-cordova/
+__pycache__/

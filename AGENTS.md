@@ -8,8 +8,8 @@ Remake of the old HTML/Cordova "Magic Bottles" (removed from this folder; see `d
 | What | Where |
 |---|---|
 | Project (Godot 4.7, GL Compatibility) | `C:\My-progs\Godot\watersort` |
-| GitHub | not created yet — planned public repo `msveshnikov/magic-bottles` (branch `master`) |
-| Downloads | APK on the server (below); Windows exe in `build/windows/` (GitHub release once the repo exists) |
+| GitHub (public) | https://github.com/msveshnikov/magic-bottles (remote `origin`, branch `master`) |
+| Downloads | GitHub release v2.0.0: `MagicBottles.exe`, `MagicBottles.apk` (`releases/latest/download/...`) |
 | Live web build | https://severance.lol/8/ |
 | Android APK | https://severance.lol/8/MagicBottles.apk — package `com.magicbottles.game`, signed with `~/.android/debug.keystore` (same key as the old Cordova APK, so it updates it) |
 | Server folder | `ubuntu@severance.lol:/var/www/severance/8/` (SSH key auth) |

@@ -4,7 +4,7 @@ A cozy 3D water-sort puzzle made in Godot 4: pour glowing potions between glass 
 single colour. 120 hand-checked levels in six painted worlds, hidden layers, hints, undo, stars — and liquids that
 actually tilt, stream and slosh.
 
-**Play in the browser:** https://severance.lol/8/ · **Android APK:** https://severance.lol/8/MagicBottles.apk
+**Play in the browser:** https://severance.lol/8/ · **Downloads:** [Windows / Android](https://github.com/msveshnikov/magic-bottles/releases/latest)
 
 ![Pouring](docs/pouring.jpg)
 ![Hidden layers](docs/hidden.jpg)

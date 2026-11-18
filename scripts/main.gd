@@ -48,6 +48,8 @@ func _ready() -> void:
 		get_viewport().msaa_3d = Viewport.MSAA_4X
 	if Game.has_arg("--autotest"):
 		_autotest()
+	elif Game.has_arg("--cardshot"):
+		_cardshot()
 	elif Game.has_arg("--storeshots"):
 		_storeshots()
 	elif Game.has_arg("--shots"):
@@ -1165,4 +1167,22 @@ func _storeshots() -> void:
 	show_title()
 	await _wait(1.6)
 	await snap.call("7_title")
+	get_tree().quit()
+
+
+## 16:9 promo shot mid-pour -> renders/card.png (portal card, README).
+func _cardshot() -> void:
+	get_window().borderless = true
+	get_window().position = Vector2i(0, 0)
+	get_window().size = Vector2i(1920, 1080)
+	await _wait(0.4)
+	start_level(int(Game.arg_value("--cardshot", "7")) - 1)
+	await _wait(1.4)
+	var m: Array = level.sol[0]
+	board.tap(int(m[0]))
+	await _wait(0.3)
+	board.tap(int(m[1]))
+	await _wait(0.62)
+	await RenderingServer.frame_post_draw
+	get_viewport().get_texture().get_image().save_png(ProjectSettings.globalize_path("res://renders/card.png"))
 	get_tree().quit()

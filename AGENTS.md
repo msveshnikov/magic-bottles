@@ -12,8 +12,9 @@ Remake of the old HTML/Cordova "Magic Bottles" (removed from this folder; see `d
 | Downloads | GitHub release v2.0.0: `MagicBottles.exe`, `MagicBottles.apk` (`releases/latest/download/...`) |
 | Live web build | https://severance.lol/8/ |
 | Android APK | https://severance.lol/8/MagicBottles.apk — package `com.magicbottles.game`, signed with `~/.android/debug.keystore` (same key as the old Cordova APK, so it updates it) |
+| maxims.top portal card | source `C:\My-progs\Godot\snacks\maxims\index.html` + `img/bottles.jpg` (from `-- --cardshot 7`); server symlink `/var/www/maxims/bottles -> /var/www/severance/8` → https://maxims.top/bottles/ |
 | Server folder | `ubuntu@severance.lol:/var/www/severance/8/` (SSH key auth) |
-| Google Play | app «Magic Bottles», package `com.magicbottles.game`, Play Console app id 4972077000876853185 (dev 5957945224586801272); listing en-US only; 2.0.1 (code 20001) + new listing sent for review 2026-11-18 |
+| Google Play | app «Magic Bottles», package `com.magicbottles.game`, Play Console app id 4972077000876853185 (dev 5957945224586801272); listings en-US «Magic Bottles: Water Sort» + ru-RU «Волшебные бутылочки»; 2.0.1 (code 20001) + new listings sent for review 2026-11-18 |
 | Play upload key | `~/.android/magicbottles-upload.jks` (alias `my-key-alias`) = copy of the old Cordova keystore with key password set to the store password (Godot uses one password). SHA1 29:92:C3:12:… Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Old Cordova release keystore | `~/.android/magicbottles-cordova.keystore` + `magicbottles-cordova.txt` (alias `my-key-alias`). Never commit. |
 | Godot exe | `C:\Users\msves\OneDrive\Рабочий стол\Godot_v4.7.2-stable_win64.exe` |

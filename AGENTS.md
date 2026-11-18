@@ -13,6 +13,8 @@ Remake of the old HTML/Cordova "Magic Bottles" (removed from this folder; see `d
 | Live web build | https://severance.lol/8/ |
 | Android APK | https://severance.lol/8/MagicBottles.apk — package `com.magicbottles.game`, signed with `~/.android/debug.keystore` (same key as the old Cordova APK, so it updates it) |
 | Server folder | `ubuntu@severance.lol:/var/www/severance/8/` (SSH key auth) |
+| Google Play | app «Magic Bottles», package `com.magicbottles.game`, Play Console app id 4972077000876853185 (dev 5957945224586801272); listing en-US only; 2.0.1 (code 20001) + new listing sent for review 2026-11-18 |
+| Play upload key | `~/.android/magicbottles-upload.jks` (alias `my-key-alias`) = copy of the old Cordova keystore with key password set to the store password (Godot uses one password). SHA1 29:92:C3:12:… Godot reads it from `.godot/export_credentials.cfg` (preset.3). Never commit. |
 | Old Cordova release keystore | `~/.android/magicbottles-cordova.keystore` + `magicbottles-cordova.txt` (alias `my-key-alias`). Never commit. |
 | Godot exe | `C:\Users\msves\OneDrive\Рабочий стол\Godot_v4.7.2-stable_win64.exe` |
 | Blender exe | `C:\Program Files\Blender Foundation\Blender 5.2\blender.exe` |
@@ -77,5 +79,13 @@ curl -sI https://severance.lol/8/index.pck
 The Android preset signs with `~/.android/debug.keystore` via `.godot/export_credentials.cfg` (not in git):
 `keystore/debug="C:/Users/msves/.android/debug.keystore"`, user `androiddebugkey`, password `android`.
 Bump `version/code` for every APK that must install over an older one.
+
+Google Play: bump `version/code` (+1) and `version/name` in BOTH Android presets, then
+`"$G" --headless --path . --export-release "Android Play" build/play/MagicBottles.aab` (Gradle build; template in `android/`,
+extracted from `export_templates/4.7.2.stable/android_source.zip`; ABIs armeabi-v7a + arm64-v8a + x86_64 — arm64 only drops 29 % of phones).
+Store art: `python tools/play_store.py` → `renders/play/`; texts in `store/listing.md`. Upload from the built-in browser: serve the repo
+with a local CORS server on 127.0.0.1:8765 and set `input[type=file]` files from a fetched blob (see project memory).
+Release flow: Тестирование и выпуск → Рабочая версия → Создать выпуск → upload → notes in `<en-US>` → Далее → Сохранить → Обзор публикации
+(pre-check ~15 min) → «Отправить N изменений на проверку».
 
 GitHub release: `"/c/Program Files/GitHub CLI/gh.exe" release create vX.Y build/windows/MagicBottles.exe build/android/MagicBottles.apk --target master --title "Magic Bottles X.Y" --notes-file notes.md`.

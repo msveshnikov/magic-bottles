@@ -48,6 +48,8 @@ func _ready() -> void:
 		get_viewport().msaa_3d = Viewport.MSAA_4X
 	if Game.has_arg("--autotest"):
 		_autotest()
+	elif Game.has_arg("--storeshots"):
+		_storeshots()
 	elif Game.has_arg("--shots"):
 		_shots()
 	elif Game.has_arg("--level"):
@@ -320,9 +322,12 @@ func show_title() -> void:
 	col.alignment = BoxContainer.ALIGNMENT_CENTER
 	col.add_theme_constant_override("separation", 0)
 	var vsz := get_viewport().get_visible_rect().size
-	var t1 := UiKit.label(Game.tr_("title").replace(" ", "
-") if vsz.y > vsz.x else Game.tr_("title"), 112 if vsz.y > vsz.x else 96, Color(1, 0.88, 0.45), 16, true)
-	t1.add_theme_constant_override("line_spacing", -28)
+	var portrait_t := vsz.y > vsz.x
+	var t1 := VBoxContainer.new()
+	t1.add_theme_constant_override("separation", -42 if portrait_t else 0)
+	var words: PackedStringArray = Game.tr_("title").split(" ") if portrait_t else PackedStringArray([Game.tr_("title")])
+	for wd in words:
+		t1.add_child(UiKit.label(wd, 112 if portrait_t else 96, Color(1, 0.88, 0.45), 16, true))
 	var t2 := UiKit.label(Game.tr_("subtitle"), 36, Color(0.9, 0.95, 1.0), 8)
 	col.add_child(t1)
 	col.add_child(t2)
@@ -1095,4 +1100,69 @@ func _shots() -> void:
 	start_level(int(Game.arg_value("--shots", "5")) - 1)
 	await _wait(1.5)
 	await shot("shot_level")
+	get_tree().quit()
+
+
+## Google Play screenshots 1080x1920 -> renders/play/raw/<lang>_N_name.png (tools/play_store.py).
+func _storeshots() -> void:
+	var tag: String = Game.save.lang
+	var dir := ProjectSettings.globalize_path("res://renders/play/raw/")
+	DirAccess.make_dir_recursive_absolute(dir)
+	get_window().borderless = true
+	get_window().position = Vector2i(0, 0)
+	get_window().size = Vector2i(1080, 1920)
+	await _wait(0.4)
+	Game.save.unlocked = 27
+	for i in 26:
+		Game.save.stars[str(i)] = 3 if i % 5 != 3 else 2
+	var snap := func(name: String) -> void:
+		await RenderingServer.frame_post_draw
+		get_viewport().get_texture().get_image().save_png(dir + tag + "_" + name + ".png")
+	# 1: pouring in the workshop
+	start_level(6)
+	await _wait(1.4)
+	var m: Array = level.sol[0]
+	board.tap(int(m[0]))
+	await _wait(0.3)
+	board.tap(int(m[1]))
+	await _wait(0.62)
+	await snap.call("1_pour")
+	await _idle()
+	# 2: sunken palace, mid-game with a cork popping
+	start_level(52)
+	await _wait(1.3)
+	for k in mini(9, level.sol.size()):
+		var mv: Array = level.sol[k]
+		board.tap(int(mv[0]))
+		board.tap(int(mv[1]))
+		await _idle()
+	await _wait(0.3)
+	await snap.call("2_ocean")
+	# 3: hidden layers + hint in the crystal caves
+	start_level(66)
+	await _wait(1.3)
+	board.show_hint(Vector2i(int(level.sol[0][0]), int(level.sol[0][1])))
+	await _wait(0.5)
+	await snap.call("3_hidden")
+	# 4: star nebula, big board
+	start_level(115)
+	await _wait(1.4)
+	await snap.call("4_cosmos")
+	# 5: win
+	start_level(25)
+	await _wait(1.2)
+	for mv in level.sol:
+		board.tap(int(mv[0]))
+		board.tap(int(mv[1]))
+		await _idle()
+	await _wait(2.6)
+	await snap.call("5_win")
+	# 6: worlds / levels
+	show_levels(1)
+	await _wait(0.8)
+	await snap.call("6_levels")
+	# 7: title
+	show_title()
+	await _wait(1.6)
+	await snap.call("7_title")
 	get_tree().quit()

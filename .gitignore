@@ -6,3 +6,5 @@ renders/autotest.log
 water-sort-game/
 water-sort-cordova/
 __pycache__/
+android/
+renders/play/
